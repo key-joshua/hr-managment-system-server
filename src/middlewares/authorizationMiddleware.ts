@@ -27,10 +27,7 @@ const isUserExist = async (req, res, next) => {
 const isAccountVerified = async (req, res, next) => {
   try {
     const verifiedToken = await verifyToken(req.params.access_token, process.env.JWT_SECRET);
-    const user = await authRepository.findUserByAttributes({
-      whereKey: '_id',
-      whereValue: verifiedToken.id
-    });
+    const user = await authRepository.findUserByAttributes({ whereKey: '_id', whereValue: verifiedToken.id });
 
     if (!user) {
       responseUtils.handleError(StatusCodes.UNAUTHORIZED, 'Account not found.');
@@ -38,7 +35,7 @@ const isAccountVerified = async (req, res, next) => {
     }
 
     if (user.is_verified) {
-      responseUtils.handleSuccess(StatusCodes.OK, 'Account already verified.', { user });
+      responseUtils.handleSuccess(StatusCodes.OK, 'Account already verified, now you can login.', { user });
       return responseUtils.response(res);
     }
 

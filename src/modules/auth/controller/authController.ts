@@ -18,13 +18,13 @@ const signup = async (req, res) => {
       await sendEmail({
         receiverEmail: user.email,
         action: 'Verification Account',
-        url: `${process.env.CLIENT_PAGE_BASE_URL}/api/auth/verify-email/${accessToken}?deviceId=${req.headers['user-device']}`,
+        url: `${process.env.CLIENT_PAGE_BASE_URL}/verify-account/${accessToken}?deviceId=${req.headers['user-device']}`,
       });
     }
 
     responseUtils.handleSuccess(StatusCodes.CREATED,
       user.is_google
-        ? 'Account created successfully, continue Signin with Google.'
+        ? 'Account created successfully, from now-on you will Signin with Google.'
         : 'Account created successfully. Please check your email to verify the account.',
       { user, session }
     );
@@ -58,7 +58,7 @@ const signin = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const user = await authRepository.updateUserByAttributes({ updatedKey: 'is_verified', updatedValue: true, whereKey: '_id', whereValue: req.user._id });
-    responseUtils.handleSuccess(StatusCodes.OK, 'Account verified successfully, now you can login', { user });
+    responseUtils.handleSuccess(StatusCodes.OK, 'Account verified successfully, now you can login.', { user });
     return responseUtils.response(res);
   } catch (error: any) {
     responseUtils.handleError(StatusCodes.INTERNAL_SERVER_ERROR, error.message || 'Internal Server Error');
@@ -100,8 +100,8 @@ const sendVerificationLink = async (req, res) => {
     const refreshToken = generateRandomString();
     const accessToken = generateAccessToken(user._id.toString(), process.env.JWT_SECRET);
     await authRepository.createSession({ user_id: user._id, device_id: req.headers['user-device'], access_token: accessToken, refresh_token: refreshToken });
-    if(action === 'verifyAccount') await sendEmail({ receiverEmail: user.email, action: 'Verification Account', url: `${process.env.CLIENT_PAGE_BASE_URL}/api/auth/verify-email/${accessToken}` });
-    if(action === 'resetPassword') await sendEmail({ receiverEmail: user.email, action: 'Reset Password', url: `${process.env.CLIENT_PAGE_BASE_URL}/api/auth/reset-password/${accessToken}` });
+    if(action === 'resetPassword') await sendEmail({ receiverEmail: user.email, action: 'Reset Password', url: `${process.env.CLIENT_PAGE_BASE_URL}/reset-password/${accessToken}` });
+    if(action === 'verifyAccount') await sendEmail({ receiverEmail: user.email, action: 'Verification Account', url: `${process.env.CLIENT_PAGE_BASE_URL}/verify-account/${accessToken}` });
 
     responseUtils.handleSuccess(StatusCodes.OK, 'Verification email sent successfully.', user);
     return responseUtils.response(res);

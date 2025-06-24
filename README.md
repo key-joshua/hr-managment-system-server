@@ -12,6 +12,7 @@
 
 - Setup mongodb database into your local system.
 - Update .env file with your database URL (DATABASE_URL)
+- installed all the required dependencies with npm install
 
 - For development run ```run npm dev```
 - For production run ```npm run start```
