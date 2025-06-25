@@ -17,7 +17,7 @@ const signup = async (req, res) => {
       await sendEmail({
         receiverEmail: user.email,
         action: 'Verification Account',
-        url: `${process.env.CLIENT_PAGE_BASE_URL}/verify-account/${accessToken}?deviceId=${req.headers['user-device']}`,
+        url: `${process.env.CLIENT_BASE_URL}/verify-account/${accessToken}?deviceId=${req.headers['user-device']}`,
       });
     }
 
@@ -99,8 +99,8 @@ const sendVerificationLink = async (req, res) => {
     const refreshToken = generateRandomString();
     const accessToken = generateAccessToken(user._id.toString(), process.env.JWT_SECRET);
     await authRepository.createSession({ user_id: user._id, device_id: req.headers['user-device'], access_token: accessToken, refresh_token: refreshToken });
-    if(action === 'resetPassword') await sendEmail({ receiverEmail: user.email, action: 'Reset Password', url: `${process.env.CLIENT_PAGE_BASE_URL}/reset-password/${accessToken}` });
-    if(action === 'verifyAccount') await sendEmail({ receiverEmail: user.email, action: 'Verification Account', url: `${process.env.CLIENT_PAGE_BASE_URL}/verify-account/${accessToken}` });
+    if(action === 'resetPassword') await sendEmail({ receiverEmail: user.email, action: 'Reset Password', url: `${process.env.CLIENT_BASE_URL}/reset-password/${accessToken}` });
+    if(action === 'verifyAccount') await sendEmail({ receiverEmail: user.email, action: 'Verification Account', url: `${process.env.CLIENT_BASE_URL}/verify-account/${accessToken}` });
 
     responseUtils.handleSuccess(StatusCodes.OK, 'Verification email sent successfully.', user);
     return responseUtils.response(res);
