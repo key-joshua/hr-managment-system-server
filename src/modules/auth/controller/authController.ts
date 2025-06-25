@@ -44,7 +44,7 @@ const signin = async (req, res) => {
     }
 
     const refreshToken = generateRandomString();
-    const accessToken = generateAccessToken(req.user.toString()._id, process.env.JWT_SECRET);
+    const accessToken = generateAccessToken(req.user._id.toString(), process.env.JWT_SECRET);
     const session = await authRepository.createSession({ user_id: req.user._id, device_id: req.deviceId, access_token: accessToken, refresh_token: refreshToken });
 
     responseUtils.handleSuccess(StatusCodes.OK, 'Logged in successfully', { user: req.user, session });
@@ -124,11 +124,23 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const verifyTokens = async (req, res) => {
+  try {
+    responseUtils.handleSuccess(StatusCodes.OK, 'Token verified successfully.', { user: req.user, session: req.session });
+    return responseUtils.response(res);
+  } catch (error: any) {
+    responseUtils.handleError(StatusCodes.INTERNAL_SERVER_ERROR, error.message || 'Internal Server Error');
+    return responseUtils.response(res);
+  }
+};
+
+
 export default {
   signup,
   signin,
   signout,
   verifyEmail,
+  verifyTokens,
   resetPassword,
   sendVerificationLink
 };

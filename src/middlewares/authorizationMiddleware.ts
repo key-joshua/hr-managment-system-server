@@ -127,7 +127,7 @@ const isCredentialExist = async (req, res, next) => {
   }
 };
 
-const isSessionVerified = async (req, res, next) => {
+const isSessionExist = async (req, res, next) => {
   try {
     let session;
     const deviceId = req.headers['user-device'];
@@ -180,7 +180,7 @@ const isPaginated = (req, res, next) => {
 export {
   isUserExist,
   isPaginated,
+  isSessionExist,
   isCredentialExist,
-  isSessionVerified,
   isAccountVerified,
 };
