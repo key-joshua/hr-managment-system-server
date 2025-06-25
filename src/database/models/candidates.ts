@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-interface CandidateInterface { profile_picture: string; firstname: string; lastname: string; email: string; phone: string; }
+interface CandidateInterface { profile_picture: string; firstname: string; lastname: string; email: string; phone: string; attachments: string[]; }
 
 const CandidateSchema = new Schema<CandidateInterface>(
   {
@@ -8,6 +8,7 @@ const CandidateSchema = new Schema<CandidateInterface>(
     lastname: { type: String, required: true },
     email: {  type: String, required: true },
     phone: {  type: String, required: true },
+    attachments: { type: [String], required: true }
   },
   { timestamps: true }
 );

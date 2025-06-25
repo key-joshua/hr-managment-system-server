@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { phoneRegex } from '../utils/phoneRegexUtils';
 
 const signupSchema = Joi.object({
   file: Joi.string().messages({
@@ -127,76 +126,12 @@ const idSchema = Joi.object().keys({
   }),
 }).unknown(true);
 
-const jobSchema = Joi.object({
-  job_title: Joi.string().required().messages({
-    'string.base': 'job_title should be a type of string',
-    'string.empty': 'job_title cannot be an empty field',
-    'any.required': 'job_title is required',
-  }),
-
-  job_description: Joi.string().required().messages({
-    'string.base': 'job_description should be a type of string',
-    'string.empty': 'job_description cannot be an empty field',
-    'any.required': 'job_description is required',
-  }),
-
-  attachments: Joi.array()
-  .items(Joi.string().required().uri().messages({
-      'string.base': 'attachments could be upload of multiple files or a single file.',
-      'string.empty': 'Each attachment cannot be an empty string',
-      'string.uri': 'Each attachment must be a valid URL',
-    })
-  )
-  .min(1) .required() .messages({
-    'array.base': 'Attachments must be an array',
-    'array.min': 'At least one attachment is required',
-    'any.required': 'Attachments field is required',
-  }),
-});
-
-const candidateSchema = Joi.object({
-  profile_picture: Joi.string().uri().required().messages({
-    'string.base': 'profile_picture must be a string',
-    'string.uri': 'profile_picture must be a valid URL',
-    'string.empty': 'profile_picture cannot be an empty field',
-    'any.required': 'profile_picture is required',
-  }),
-
-  firstname: Joi.string().required().messages({
-    'string.base': 'firstname should be a type of string',
-    'string.empty': 'firstname cannot be an empty field',
-    'any.required': 'firstname is required',
-  }),
-
-  lastname: Joi.string().required().messages({
-    'string.base': 'lastname should be a type of string',
-    'string.empty': 'lastname cannot be an empty field',
-    'any.required': 'lastname is required',
-  }),
-
-  email: Joi.string().email().required().messages({
-    'string.base': 'email should be a type of string',
-    'string.email': 'email must be a valid email address',
-    'string.empty': 'email cannot be an empty field',
-    'any.required': 'email is required',
-  }),
-  
-  phone: Joi.string().pattern(phoneRegex).messages({
-    "phoneNumber.invalid": "phone is not seem to be a phone number",
-    "string.empty": "phone is not allowed to be empty",
-    'string.base': 'phone should be a type of string',
-    'any.required': 'phone is required',
-  }),
-});
-
 export {
   idSchema,
-  jobSchema,
   signupSchema,
   signinSchema,
   passwordSchema,
   sendEmailSchema,
-  candidateSchema,
   userDeviceSchema,
   accessTokenSchema,
   authorizationSchema,

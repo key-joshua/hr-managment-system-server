@@ -4,8 +4,7 @@ import candidateRepository from '../repository/candidatesRepository';
 
 const createCandidate = async (req, res) => {
   try {
-    const profilePicture = req.body.file ? req.body.file : null;
-    const candidate = await candidateRepository.createCandidate({ ...req.body, profile_picture: profilePicture });
+    const candidate = await candidateRepository.createCandidate(req.body);
 
     responseUtils.handleSuccess(StatusCodes.CREATED, 'Candidate created successfully.', candidate);
     return responseUtils.response(res);

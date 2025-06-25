@@ -7,8 +7,7 @@ import { generateAccessToken, generateRandomString } from '../../../utils/jwtUti
 
 const signup = async (req, res) => {
   try {
-    const profilePicture = req.body.file ? req.body.file : null;
-    const user = await authRepository.createUser({ ...req.body, profile_picture: profilePicture });
+    const user = await authRepository.createUser(req.body);
 
     const refreshToken = generateRandomString();
     const accessToken = generateAccessToken(user._id.toString(), process.env.JWT_SECRET);

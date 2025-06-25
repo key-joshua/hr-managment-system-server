@@ -5,7 +5,7 @@ const JobSchema = new Schema<JobInterface>(
   {
     job_title: { type: String, required: true },
     job_description: { type: String, required: true },
-    attachments: { type: [String], required: true }
+    attachments: { type: [String], required: false, default: []}
   },
   { timestamps: true }
 );
